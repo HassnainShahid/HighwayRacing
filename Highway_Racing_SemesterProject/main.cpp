@@ -1,5 +1,7 @@
 
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
+#include <ctime>
 
 int main()
 {
@@ -46,6 +48,25 @@ int main()
     sf::Sprite car(carTexture);
     car.setPosition({ 375.f, 450.f });
     car.setScale({ 2.0f,2.0f });
+
+    // CREATE ENEMY CAR
+    sf::Texture enemyTexture;
+
+    if (!enemyTexture.loadFromFile("assets/enemycar.png"))
+    {
+        return -1;
+    }
+
+    sf::Sprite enemycar(enemyTexture);
+
+    enemycar.setScale({ 0.25f, 0.25f });
+    enemycar.setPosition({ 350.f, -170.f });
+
+    float enemySpeed = 3.f;
+    int lane = 0;
+    int randomNumber = 0;
+
+    srand(static_cast<unsigned int>(time(0)));
 
     //MAIN GAME LOOP
     while (window.isOpen())
@@ -108,9 +129,35 @@ int main()
             road2.setPosition({ 0.f, road1.getPosition().y - 600.f });
         }
 
+       
+        // MOVING ENEMY CAR
+        enemycar.move({ 0.f, enemySpeed });
 
+        if (enemycar.getPosition().y > 600.f)
+        {
+            randomNumber = rand() % 3;
+
+            if (randomNumber == 0)
+            {
+                lane = 180;
+            }
+            else if (randomNumber == 1)
+            {
+                lane = 350;
+            }
+            else
+            {
+                lane = 520;
+            }
+
+            enemycar.setPosition({ static_cast<float>(lane), -170.f });
+        }
+
+
+        window.clear(sf::Color::Green);
         window.draw(road1);
         window.draw(road2);
+        window.draw(enemycar);
         window.draw(car);
         window.display();
 
