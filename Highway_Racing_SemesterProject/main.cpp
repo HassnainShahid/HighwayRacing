@@ -17,7 +17,7 @@ int main()
     //CREATING ROAD
     sf::Texture roadTexture;
 
-    if (!roadTexture.loadFromFile("assets//road.png"))
+    if (!roadTexture.loadFromFile("assets//f1.png"))
     {
         return -1;
     }
@@ -26,10 +26,8 @@ int main()
     sf::Sprite road2(roadTexture);
 
 
-
-
-    road1.setScale({ 0.7f,0.5f });
-    road2.setScale({ 0.7f, 0.5f });
+    road1.setScale({ 0.5525f, 0.5525f });
+    road2.setScale({ 0.5525f, 0.5525f });
 
     road1.setPosition({ 0.f, 0.f });
     road2.setPosition({ 0.f, -600.f });
@@ -82,7 +80,7 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         {
-            if (car.getPosition().x > 100.f)
+            if (car.getPosition().x > 105.f)
             {
                 car.move({ -speed, 0.f });
             }
@@ -90,7 +88,7 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
         {
-            if (car.getPosition().x > 100.f)
+            if (car.getPosition().x > 105.f)
             {
                 car.move({ -speed, 0.f });
             }
@@ -99,7 +97,7 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
         {
-            if (car.getPosition().x < 600.f)
+            if (car.getPosition().x < 570.f)
             {
                 car.move({ speed, 0.f });
             }
@@ -107,7 +105,7 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
         {
-            if (car.getPosition().x < 600.f)
+            if (car.getPosition().x < 570.f)
             {
                 car.move({ speed, 0.f });
             }
