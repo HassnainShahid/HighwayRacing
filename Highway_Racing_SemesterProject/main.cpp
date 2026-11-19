@@ -1,4 +1,4 @@
-//Highway Racing Game
+//Highway Racing Game (F1-Themed)
 #include<SFML/Graphics.hpp>
 #include<cstdlib>    //for rand() and srand()
 #include<ctime>      //for time()
@@ -166,10 +166,6 @@ int main()
     srand(static_cast<unsigned int>(time(0)));
 
 
-    // Held-key state, updated from key events (SFML 3.1 HID polling is broken on macOS).
-    bool moveLeft = false;
-    bool moveRight = false;
-
     //---------------------MAIN GAME LOOP---------------------------------------------------------------
     while (window.isOpen())
     {
@@ -181,33 +177,25 @@ int main()
             {
                 window.close();
             }
-            else if (const auto keyPressed = event->getIf<sf::Event::KeyPressed>())
+        }
+        // MOVING PLAYER CAR LEFT USING LEFT ARROW KEY OR A KEY
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+        {
+            if (playerCar.getPosition().x > 110.f)
             {
-                if (keyPressed->code == sf::Keyboard::Key::Left || keyPressed->code == sf::Keyboard::Key::A)
-                    moveLeft = true;
-                if (keyPressed->code == sf::Keyboard::Key::Right || keyPressed->code == sf::Keyboard::Key::D)
-                    moveRight = true;
-            }
-            else if (const auto keyReleased = event->getIf<sf::Event::KeyReleased>())
-            {
-                if (keyReleased->code == sf::Keyboard::Key::Left || keyReleased->code == sf::Keyboard::Key::A)
-                    moveLeft = false;
-                if (keyReleased->code == sf::Keyboard::Key::Right || keyReleased->code == sf::Keyboard::Key::D)
-                    moveRight = false;
+                playerCar.move({ -playerCarSpeed, 0.f });
             }
         }
 
-        //MOVING PLAYER CAR LEFT USING LEFT ARROW KEY OR A KEY
-        if (moveLeft && playerCar.getPosition().x > 110.f)
+        // MOVING PLAYER CAR RIGHT USING RIGHT ARROW KEY OR D KEY
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
         {
-            playerCar.move({ -playerCarSpeed, 0.f });
+            if (playerCar.getPosition().x < 590.f)
+            {
+                playerCar.move({ playerCarSpeed, 0.f });
+            }
         }
-
-        //MOVING PLAYER CAR RIGHT USING RIGHT ARROW KEY OR D KEY
-        if (moveRight && playerCar.getPosition().x < 590.f)
-        {
-            playerCar.move({ playerCarSpeed, 0.f });
-        }
+        
 
         // MOVE BOTH ROAD SPRITES DOWNWARD
         road1.move({ 0.f, roadSpeed });
