@@ -181,14 +181,14 @@ int main()
             {
                 window.close();
             }
-            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            else if (const auto keyPressed = event->getIf<sf::Event::KeyPressed>())
             {
                 if (keyPressed->code == sf::Keyboard::Key::Left || keyPressed->code == sf::Keyboard::Key::A)
                     moveLeft = true;
                 if (keyPressed->code == sf::Keyboard::Key::Right || keyPressed->code == sf::Keyboard::Key::D)
                     moveRight = true;
             }
-            else if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
+            else if (const auto keyReleased = event->getIf<sf::Event::KeyReleased>())
             {
                 if (keyReleased->code == sf::Keyboard::Key::Left || keyReleased->code == sf::Keyboard::Key::A)
                     moveLeft = false;
@@ -227,14 +227,7 @@ int main()
             road2.setPosition({ 0.f, road1.getPosition().y - 600.f });
         }
 
-        //HITBOX PLAYER CAR
-        sf::FloatRect playerHitbox = playerCar.getGlobalBounds();
-
-        playerHitbox.position.x += 15.f;
-        playerHitbox.position.y += 20.f;
-
-        playerHitbox.size.x -= 30.f;
-        playerHitbox.size.y -= 40.f;
+       
 
 
         // ------------------------MOVING ENEMY CARS-------------------------------------------------------
@@ -245,19 +238,6 @@ int main()
             //MOVING CURRENT ENEMY CAR DOWNWARD
             enemyCar[i].move({ 0.f, enemySpeed });
 
-            // ENEMY HITBOX
-            sf::FloatRect enemyHitbox = enemyCar[i].getGlobalBounds();
-
-            enemyHitbox.position.x += 15.f;
-            enemyHitbox.position.y += 20.f;
-
-            enemyHitbox.size.x -= 30.f;
-            enemyHitbox.size.y -= 35.f;
-
-            if (playerHitbox.findIntersection(enemyHitbox))
-            {
-                window.close();
-            }
 
             //CHECKING IF ENEMY HAS LEFT THE SCREEN AND HAS NOT BEEN SCORED
             if (enemyCar[i].getPosition().y > 600.f && enemyPassed[i] == false)
