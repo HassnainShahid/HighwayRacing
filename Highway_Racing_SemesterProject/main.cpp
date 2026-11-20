@@ -71,7 +71,7 @@ int main()
         return -1;  //EXIT IF FONT CANNOT BE LOADED
     }
 
-
+    
     //CREATING SCORE TEXT
     sf::Text scoreText(font);
 
@@ -166,6 +166,9 @@ int main()
     srand(static_cast<unsigned int>(time(0)));
 
 
+    //ONE NUMBER FOR MOVEMENT: -1 = LEFT, 1 = RIGHT, 0 = STOP
+    int moveDirection = 0;
+
     //---------------------MAIN GAME LOOP---------------------------------------------------------------
     while (window.isOpen())
     {
@@ -177,23 +180,37 @@ int main()
             {
                 window.close();
             }
-        }
-        // MOVING PLAYER CAR LEFT USING LEFT ARROW KEY OR A KEY
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-        {
-            if (playerCar.getPosition().x > 110.f)
+            else if (const auto* key = event->getIf<sf::Event::KeyPressed>())
             {
-                playerCar.move({ -playerCarSpeed, 0.f });
+                if (key->code == sf::Keyboard::Key::Left || key->code == sf::Keyboard::Key::A)
+                {
+                    moveDirection = -1;
+                }
+                if (key->code == sf::Keyboard::Key::Right || key->code == sf::Keyboard::Key::D)
+                {
+                    moveDirection = 1;
+                }
+            }
+            else if (const auto* key = event->getIf<sf::Event::KeyReleased>())
+            {
+                if (key->code == sf::Keyboard::Key::Left || key->code == sf::Keyboard::Key::A ||
+                    key->code == sf::Keyboard::Key::Right || key->code == sf::Keyboard::Key::D)
+                {
+                    moveDirection = 0;
+                }
             }
         }
 
-        // MOVING PLAYER CAR RIGHT USING RIGHT ARROW KEY OR D KEY
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        //MOVE THE CAR EVERY FRAME (SMOOTH) AND KEEP IT ON THE ROAD
+        playerCar.move({ moveDirection * playerCarSpeed, 0.f });
+
+        if (playerCar.getPosition().x < 110.f)
         {
-            if (playerCar.getPosition().x < 590.f)
-            {
-                playerCar.move({ playerCarSpeed, 0.f });
-            }
+            playerCar.setPosition({ 110.f, playerCar.getPosition().y });
+        }
+        if (playerCar.getPosition().x > 590.f)
+        {
+            playerCar.setPosition({ 590.f, playerCar.getPosition().y });
         }
         
 
